@@ -1,12 +1,14 @@
 {
     "configurations": [
+        
+
         {
             "name": "debug",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/${relativeFileDirname}/${fileBasenameNoExtension}",
             "args": [],
-            "stopAtEntry": true,
+            "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
             "externalConsole": false,
@@ -35,9 +37,10 @@
             "preLaunchTask": "compile and target",
             "miDebuggerPath": "/usr/bin/gdb",
             "miDebuggerArgs": "-ex set detach-on-fork on -ex set follow-fork-mode child",
-           // "coreDumpPath": "",
-            
-        }
+           // "coreDumpPath": "",   
+        },
+
     ],
+    
     "version": "2.0.0"
 }
