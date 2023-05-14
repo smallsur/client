@@ -8,13 +8,59 @@
 #include<stdio.h>
 #include<functional>
 #include<set>
+#include<string.h>
+#include<limits>
 
 using namespace std;
 
 
 const vector<pair<int, int>> directions{{0,1},{0,-1},{1,0},{-1,0}};
 
+//字典树
+class Trie {
+    struct TrieNode {
+        bool end;
+        TrieNode* tns[26];
+        TrieNode() : end(false) {
+            memset(tns, 0, sizeof(tns));
+        }
+    };
 
+    TrieNode* root;
+
+public:
+    Trie() : root(new TrieNode()) {}
+
+    void insert(string s) {
+        TrieNode* p = root;
+        for(int i = 0; i < s.length(); i++) {
+            int u = s[i] - 'a';
+            if (p->tns[u] == nullptr) p->tns[u] = new TrieNode();
+            p = p->tns[u]; 
+        }
+        p->end = true;
+    }
+
+    bool search(string s) {
+        TrieNode* p = root;
+        for(int i = 0; i < s.length(); i++) {
+            int u = s[i] - 'a';
+            if (p->tns[u] == nullptr) return false;
+            p = p->tns[u]; 
+        }
+        return p->end;
+    }
+
+    bool startsWith(string s) {
+        TrieNode* p = root;
+        for(int i = 0; i < s.length(); i++) {
+            int u = s[i] - 'a';
+            if (p->tns[u] == nullptr) return false;
+            p = p->tns[u]; 
+        }
+        return true;
+    }
+};
 
 //链表
 struct ListNode {
@@ -135,54 +181,32 @@ struct MyComp {
     }
 };
 
+
+bool myless(const pair<int,int>& lhs, const pair<int,int>& rhs){
+    return lhs.second>rhs.second;
+}
+
 class Solution {
 public:
-    vector<vector<int>> ans;
-    int target;
-    void dfs(vector<int>& candidates, int sum, vector<int>& record, int pos,int lastvalue){
-        if(sum==target){
-            vector<int> results(record);
-            // s.insert(results);
-            ans.push_back(results);
-            return;
-        }else if(sum>target){
-            return;
-        }
-        if(pos>=candidates.size()){
-            return;
-        }
-        if(lastvalue==candidates[pos]){
-            record.push_back(candidates[pos]);
-            dfs(candidates,sum + candidates[pos], record, pos+1, candidates[pos]);
-            record.pop_back();
-        }else{
-            record.push_back(candidates[pos]);
-            dfs(candidates,sum + candidates[pos], record, pos+1, candidates[pos]);
-            record.pop_back();
-            dfs(candidates,sum,record, pos+1, lastvalue);
-        }
-        return;
-    };
-    vector<vector<int>> combinationSum2(vector<int>& candidates, int tar) {
-        sort(candidates.begin(),candidates.end());
-        target = tar;
-        vector<int> record;
-        dfs(candidates,0,record, 0, -1);
-        return ans;
-    }
 };
 
 int main(){
     Solution s;
-    vector<int> test = {3,2,4};
-    string st("23");
+    vector<int> test = {4,3,2,3,5,2,1};
+    // string st("catsandogcat");
     // s.longestPalindrome(st);
     // s.lengthLongestPath(st);
     // s.isValidSerialization(st);
-    vector<vector<int>> grid = {{0}};
+    // vector<vector<int>> grid = {{0,2},{1,3}};
     // s.swimInWater(grid);
     // const int & a = 10;
     // s.letterCombinations(st);
+    // s.combinationSum2(test,8);
+    // s.maxArea(test);
+    // vector<string> s_test = {"cats","dog","sand","and","cat","an"};
+    // s.wordBreak(st,s_test);
+    // s.canPartitionKSubsets(test, 4);
+
     return 0;
 }
 
